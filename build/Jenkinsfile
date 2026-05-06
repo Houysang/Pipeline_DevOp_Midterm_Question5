@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    environment {
+        NAME = "Guov_Houysang"
+    }
+
+    stages {
+
+        stage('Clone') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/Houysang/Pipeline_DevOp_Midterm_Question5.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                bat '''
+                mkdir build
+                echo "<h1>Midterm DevOp Question 5</h1>" > build/index.html
+                '''
+            }
+        }
+
+        stage('Deploy with Ansible (WSL)') {
+            steps {
+                bat '''
+                wsl ansible-playbook -i ~/ansible-deploy/inventory.ini ~/ansible-deploy/deploy.yml
+                '''
+            }
+        }
+    }
+
+    post {
+
+        success {
+            echo "Deployment SUCCESS"
+        }
+
+        failure {
+            echo "Deployment FAILED"
+        }
+    }
+}

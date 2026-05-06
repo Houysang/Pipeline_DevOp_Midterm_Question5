@@ -1,0 +1,14 @@
+- name: Deploy website
+  hosts: web
+  become: no
+
+  tasks:
+    - name: Create directory
+      file:
+        path: /var/www/html/Midterm-2026/Guov_Houysang
+        state: directory
+
+    - name: Copy build files
+      copy:
+        src: build/
+        dest: /var/www/html/Midterm-2026/Guov_Houysang/
